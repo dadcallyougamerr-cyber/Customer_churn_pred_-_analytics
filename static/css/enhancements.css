@@ -1,0 +1,267 @@
+/* ============================================================
+   VISUAL ENHANCEMENTS — shared across all pages
+   Shine/ripple buttons, glowing hover cards, animated counters,
+   circular probability gauge, model comparison bars.
+============================================================ */
+
+/* --- Buttons & clickable cards: shine sweep on hover --- */
+
+.shine-btn,
+.option-card,
+form button[type="submit"] {
+    position: relative;
+    overflow: hidden;
+}
+
+.shine-btn::before,
+.option-card::before,
+form button[type="submit"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.28),
+        transparent
+    );
+    transform: skewX(-20deg);
+    transition: left 0.55s ease;
+    pointer-events: none;
+}
+
+.shine-btn:hover::before,
+.option-card:hover::before,
+form button[type="submit"]:hover::before {
+    left: 130%;
+}
+
+/* --- Ripple on click (JS adds .ripple span) --- */
+
+.ripple-span {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    transform: scale(0);
+    animation: ripple-anim 0.6s ease-out;
+    pointer-events: none;
+}
+
+@keyframes ripple-anim {
+    to {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+/* --- Glow-lift hover for cards --- */
+
+.glow-lift {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.glow-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(37, 99, 235, 0.35);
+    border-color: rgba(96, 165, 250, 0.6) !important;
+}
+
+/* --- Floating particles canvas (mouse-reactive) --- */
+
+#enh-particles {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* --- Animated count-up numbers just fade/scale in when triggered --- */
+
+.count-up {
+    display: inline-block;
+    animation: count-pop 0.5s ease;
+}
+
+@keyframes count-pop {
+    from { transform: scale(0.85); opacity: 0.4; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+/* ============================================================
+   CIRCULAR PROBABILITY GAUGE (prediction result page)
+============================================================ */
+
+.gauge-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 6px;
+}
+
+.gauge-svg {
+    width: 190px;
+    height: 190px;
+    transform: rotate(-90deg);
+}
+
+.gauge-track {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 14;
+}
+
+.gauge-fill {
+    fill: none;
+    stroke-width: 14;
+    stroke-linecap: round;
+    stroke-dasharray: 502.4;
+    stroke-dashoffset: 502.4;
+    transition: stroke-dashoffset 1.4s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s ease;
+}
+
+.gauge-center-label {
+    position: relative;
+    text-align: center;
+    margin-top: -128px;
+    pointer-events: none;
+}
+
+.gauge-center-label .gauge-number {
+    font-size: 34px;
+    font-weight: 800;
+    display: block;
+    line-height: 1;
+}
+
+.gauge-center-label .gauge-caption {
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    display: block;
+    margin-top: 4px;
+}
+
+.gauge-fill.low   { stroke: #22c55e; }
+.gauge-fill.medium{ stroke: #f59e0b; }
+.gauge-fill.high  { stroke: #ef4444; }
+
+.gauge-number.low   { color: #4ade80; }
+.gauge-number.medium{ color: #fbbf24; }
+.gauge-number.high  { color: #f87171; }
+
+/* ============================================================
+   MODEL PERFORMANCE PANEL (dashboard)
+============================================================ */
+
+.model-perf-section {
+    margin-bottom: 24px;
+    padding: 24px 26px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(8, 25, 58, 0.96), rgba(8, 15, 38, 0.96));
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.model-perf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.model-perf-header h2 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.model-perf-header p {
+    margin: 4px 0 0;
+    color: #94a3b8;
+    font-size: 13.5px;
+}
+
+.model-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(74, 222, 128, 0.4);
+    color: #4ade80;
+    font-size: 12.5px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.model-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.model-metric-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(15, 35, 75, 0.55);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    text-align: center;
+}
+
+.model-metric-card strong {
+    display: block;
+    font-size: 22px;
+    color: #7dd3fc;
+    margin-bottom: 4px;
+}
+
+.model-metric-card span {
+    font-size: 11.5px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.model-compare-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.model-compare-row {
+    display: grid;
+    grid-template-columns: 170px 1fr 60px;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+.model-compare-row.is-best {
+    color: #eafaf0;
+    font-weight: 700;
+}
+
+.model-bar-track {
+    height: 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+}
+
+.model-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    width: 0%;
+    transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.model-compare-row.is-best .model-bar-fill {
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+}

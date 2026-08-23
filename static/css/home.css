@@ -1,0 +1,1548 @@
+/* =========================================================
+   CUSTOMER CHURN — LIVE MOVING WALLPAPER
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #f8fafc;
+    background: #020617;
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   LIVE WALLPAPER
+========================================================= */
+
+.live-background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(37, 99, 235, 0.35),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 85% 75%,
+            rgba(124, 58, 237, 0.30),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(30, 64, 175, 0.10),
+            transparent 40%
+        ),
+        #020617;
+
+    animation: wallpaperMove 18s ease-in-out infinite alternate;
+}
+
+
+/* =========================================================
+   BLUE MOVING ORB
+========================================================= */
+
+.live-background::before {
+    content: "";
+
+    position: absolute;
+
+    width: 650px;
+    height: 650px;
+
+    top: -250px;
+    left: -220px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(59, 130, 246, 0.65) 0%,
+            rgba(37, 99, 235, 0.30) 35%,
+            transparent 70%
+        );
+
+    filter: blur(55px);
+
+    animation: blueOrb 12s ease-in-out infinite alternate;
+}
+
+
+/* =========================================================
+   PURPLE MOVING ORB
+========================================================= */
+
+.live-background::after {
+    content: "";
+
+    position: absolute;
+
+    width: 600px;
+    height: 600px;
+
+    right: -220px;
+    bottom: -220px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(168, 85, 247, 0.60) 0%,
+            rgba(124, 58, 237, 0.28) 35%,
+            transparent 70%
+        );
+
+    filter: blur(60px);
+
+    animation: purpleOrb 15s ease-in-out infinite alternate;
+}
+
+
+/* =========================================================
+   EXTRA MOVING LIGHT
+========================================================= */
+
+.live-background .light {
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(96, 165, 250, 0.25),
+            transparent 70%
+        );
+
+    filter: blur(50px);
+
+    animation: centerLight 10s ease-in-out infinite alternate;
+}
+
+
+/* =========================================================
+   PAGE CONTENT
+========================================================= */
+
+.page-content {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   HOME CONTAINER
+========================================================= */
+
+.home-container {
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    padding: 90px 20px 70px;
+    text-align: center;
+    background: transparent;
+}
+
+.hero-content {
+    max-width: 850px;
+    margin: auto;
+}
+
+.eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #60a5fa;
+
+    text-shadow:
+        0 0 20px rgba(96, 165, 250, 0.5);
+}
+
+.hero h1 {
+    margin: 18px 0;
+
+    font-size: 52px;
+    line-height: 1.1;
+
+    color: #f8fafc;
+
+    text-shadow:
+        0 5px 30px rgba(0, 0, 0, 0.4);
+}
+
+.hero h1 span {
+    display: block;
+
+    color: #3b82f6;
+
+    text-shadow:
+        0 0 35px rgba(59, 130, 246, 0.45);
+}
+
+.hero p {
+    max-width: 650px;
+    margin: auto;
+
+    font-size: 18px;
+    line-height: 1.7;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.options-section {
+    max-width: 1100px;
+
+    margin: auto;
+
+    padding: 65px 20px;
+
+    text-align: center;
+
+    background: transparent;
+}
+
+.options-section h2 {
+    margin: 0;
+
+    font-size: 30px;
+
+    color: #f8fafc;
+}
+
+.section-subtitle {
+    color: #94a3b8;
+
+    margin: 10px 0 35px;
+}
+
+
+/* =========================================================
+   MOVING GRID
+========================================================= */
+
+.options-section::before {
+    content: "";
+
+    position: fixed;
+
+    inset: -100px;
+
+    z-index: -1;
+
+    pointer-events: none;
+
+    opacity: 0.15;
+
+    background-image:
+        linear-gradient(
+            rgba(96, 165, 250, 0.15) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(96, 165, 250, 0.15) 1px,
+            transparent 1px
+        );
+
+    background-size: 70px 70px;
+
+    mask-image:
+        radial-gradient(
+            ellipse at center,
+            black 0%,
+            transparent 70%
+        );
+
+    animation: gridMove 18s linear infinite;
+}
+
+
+/* =========================================================
+   OPTION GRID
+========================================================= */
+
+.options-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 25px;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.option-card {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 22px;
+
+    text-align: left;
+
+    text-decoration: none;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.98),
+            rgba(248, 250, 252, 0.94)
+        );
+
+    padding: 32px;
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.30);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* Moving shine across cards */
+
+.option-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 70%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.35),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition: left 0.7s ease;
+
+    pointer-events: none;
+}
+
+.option-card:hover::before {
+    left: 140%;
+}
+
+.option-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow:
+        0 30px 70px rgba(0, 0, 0, 0.40),
+        0 0 40px rgba(37, 99, 235, 0.15);
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.option-icon {
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 28px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #dbeafe
+        );
+
+    box-shadow:
+        0 8px 25px rgba(37, 99, 235, 0.15);
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.option-content {
+    position: relative;
+    z-index: 2;
+}
+
+.option-content h3 {
+    margin: 0 0 10px;
+
+    font-size: 21px;
+
+    color: #1e293b;
+}
+
+.option-content p {
+    margin: 0 0 18px;
+
+    color: #64748b;
+
+    line-height: 1.6;
+}
+
+.option-link {
+    font-weight: 700;
+
+    color: #2563eb;
+
+    transition:
+        color 0.2s ease,
+        letter-spacing 0.2s ease;
+}
+
+.option-card:hover .option-link {
+    color: #1d4ed8;
+
+    letter-spacing: 0.3px;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features {
+    max-width: 1000px;
+
+    margin: 0 auto 60px;
+
+    padding: 25px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+
+    border-top:
+        1px solid rgba(148, 163, 184, 0.20);
+}
+
+.feature {
+    text-align: center;
+}
+
+.feature strong {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #f8fafc;
+}
+
+.feature span {
+    color: #94a3b8;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    text-align: center;
+
+    padding: 25px;
+
+    border-top:
+        1px solid rgba(148, 163, 184, 0.15);
+
+    color: #94a3b8;
+
+    font-size: 14px;
+
+    background: transparent;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes wallpaperMove {
+
+    0% {
+        transform:
+            scale(1)
+            translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform:
+            scale(1.08)
+            translate3d(-2%, 2%, 0);
+    }
+
+    100% {
+        transform:
+            scale(1.04)
+            translate3d(2%, -2%, 0);
+    }
+}
+
+
+@keyframes blueOrb {
+
+    0% {
+        transform:
+            translate3d(0, 0, 0)
+            scale(1);
+    }
+
+    25% {
+        transform:
+            translate3d(180px, 100px, 0)
+            scale(1.2);
+    }
+
+    50% {
+        transform:
+            translate3d(350px, 250px, 0)
+            scale(0.9);
+    }
+
+    75% {
+        transform:
+            translate3d(180px, 400px, 0)
+            scale(1.25);
+    }
+
+    100% {
+        transform:
+            translate3d(450px, 180px, 0)
+            scale(1);
+    }
+}
+
+
+@keyframes purpleOrb {
+
+    0% {
+        transform:
+            translate3d(0, 0, 0)
+            scale(1);
+    }
+
+    30% {
+        transform:
+            translate3d(-180px, -120px, 0)
+            scale(1.2);
+    }
+
+    60% {
+        transform:
+            translate3d(-350px, -250px, 0)
+            scale(0.9);
+    }
+
+    100% {
+        transform:
+            translate3d(-120px, -400px, 0)
+            scale(1.2);
+    }
+}
+
+
+@keyframes centerLight {
+
+    0% {
+        transform:
+            translate(-150px, -100px)
+            scale(0.8);
+
+        opacity: 0.3;
+    }
+
+    50% {
+        transform:
+            translate(200px, 100px)
+            scale(1.3);
+
+        opacity: 0.8;
+    }
+
+    100% {
+        transform:
+            translate(-100px, 250px)
+            scale(0.7);
+
+        opacity: 0.3;
+    }
+}
+
+
+@keyframes gridMove {
+
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(35px, -20px);
+    }
+
+    50% {
+        transform: translate(70px, 35px);
+    }
+
+    75% {
+        transform: translate(25px, 65px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .hero {
+        padding-top: 60px;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .option-card {
+        padding: 24px;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .live-background,
+    .live-background::before,
+    .live-background::after,
+    .options-section::before {
+        animation: none;
+    }
+
+    .option-card {
+        transition: none;
+    }
+}
+/* =========================================================
+   CUSTOMER CHURN ANALYTICS LIVE GRAPH
+========================================================= */
+
+.live-background {
+    position: fixed;
+    inset: 0;
+
+    z-index: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(37, 99, 235, 0.28),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 75%,
+            rgba(124, 58, 237, 0.24),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #020617,
+            #07142f,
+            #020617
+        );
+}
+
+
+/* =========================================================
+   GRAPH
+========================================================= */
+
+.churn-graph {
+    position: absolute;
+
+    width: 120%;
+    height: 120%;
+
+    left: -10%;
+    top: -10%;
+
+    opacity: 0.35;
+
+    overflow: visible;
+
+    animation: graphFloat 12s ease-in-out infinite alternate;
+}
+
+
+/* =========================================================
+   GRAPH GRID
+========================================================= */
+
+.graph-grid {
+    stroke: rgba(96, 165, 250, 0.10);
+
+    stroke-width: 1;
+
+    fill: none;
+
+    animation: gridPulse 6s ease-in-out infinite alternate;
+}
+
+
+/* =========================================================
+   MAIN CHURN LINE
+========================================================= */
+
+.churn-line {
+    fill: none;
+
+    stroke: #3b82f6;
+
+    stroke-width: 5;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    filter:
+        drop-shadow(
+            0 0 10px rgba(59, 130, 246, 0.8)
+        )
+        drop-shadow(
+            0 0 25px rgba(59, 130, 246, 0.35)
+        );
+
+    stroke-dasharray: 2200;
+
+    stroke-dashoffset: 2200;
+
+    animation:
+        graphDraw 7s linear infinite;
+}
+
+
+/* =========================================================
+   SECONDARY GRAPH
+========================================================= */
+
+.secondary-line {
+    fill: none;
+
+    stroke: #8b5cf6;
+
+    stroke-width: 3;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    opacity: 0.45;
+
+    filter:
+        drop-shadow(
+            0 0 10px rgba(139, 92, 246, 0.6)
+        );
+
+    stroke-dasharray: 2200;
+
+    stroke-dashoffset: 2200;
+
+    animation:
+        graphDraw 9s linear infinite reverse;
+}
+
+
+/* =========================================================
+   GRAPH POINTS
+========================================================= */
+
+.graph-points circle {
+    fill: #60a5fa;
+
+    stroke: rgba(255, 255, 255, 0.8);
+
+    stroke-width: 2;
+
+    filter:
+        drop-shadow(
+            0 0 10px rgba(59, 130, 246, 1)
+        );
+
+    animation: pointPulse 2s ease-in-out infinite alternate;
+}
+
+
+/* Different timing for points */
+
+.graph-points circle:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.graph-points circle:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+.graph-points circle:nth-child(4) {
+    animation-delay: 0.9s;
+}
+
+.graph-points circle:nth-child(5) {
+    animation-delay: 1.2s;
+}
+
+.graph-points circle:nth-child(6) {
+    animation-delay: 1.5s;
+}
+
+.graph-points circle:nth-child(7) {
+    animation-delay: 1.8s;
+}
+
+
+/* =========================================================
+   GRAPH MOVES DOWN → UP → DOWN
+========================================================= */
+
+@keyframes graphFloat {
+
+    0% {
+        transform:
+            translateY(-70px)
+            scale(1);
+    }
+
+    25% {
+        transform:
+            translateY(20px)
+            scale(1.02);
+    }
+
+    50% {
+        transform:
+            translateY(100px)
+            scale(1.04);
+    }
+
+    75% {
+        transform:
+            translateY(20px)
+            scale(1.02);
+    }
+
+    100% {
+        transform:
+            translateY(-70px)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   GRAPH LINE DRAWING
+========================================================= */
+
+@keyframes graphDraw {
+
+    0% {
+        stroke-dashoffset: 2200;
+    }
+
+    45% {
+        stroke-dashoffset: 0;
+    }
+
+    70% {
+        stroke-dashoffset: 0;
+    }
+
+    100% {
+        stroke-dashoffset: -2200;
+    }
+}
+
+
+/* =========================================================
+   POINT GLOW
+========================================================= */
+
+@keyframes pointPulse {
+
+    0% {
+        opacity: 0.45;
+        transform: scale(0.8);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1.35);
+    }
+}
+
+
+/* =========================================================
+   GRID PULSE
+========================================================= */
+
+@keyframes gridPulse {
+
+    0% {
+        opacity: 0.25;
+    }
+
+    100% {
+        opacity: 0.7;
+    }
+}
+
+
+/* =========================================================
+   FLOATING ANALYTICS PARTICLES
+========================================================= */
+
+.particle {
+    position: absolute;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: #60a5fa;
+
+    box-shadow:
+        0 0 10px #3b82f6,
+        0 0 25px rgba(59, 130, 246, 0.7);
+
+    opacity: 0.6;
+
+    animation: particleFloat 8s ease-in-out infinite;
+}
+
+.particle-1 {
+    left: 15%;
+    top: 70%;
+    animation-delay: 0s;
+}
+
+.particle-2 {
+    left: 70%;
+    top: 25%;
+    animation-delay: 2s;
+}
+
+.particle-3 {
+    left: 82%;
+    top: 60%;
+    animation-delay: 4s;
+}
+
+.particle-4 {
+    left: 35%;
+    top: 35%;
+    animation-delay: 6s;
+}
+
+
+@keyframes particleFloat {
+
+    0% {
+        transform:
+            translateY(40px)
+            scale(0.7);
+
+        opacity: 0.2;
+    }
+
+    50% {
+        transform:
+            translateY(-80px)
+            scale(1.3);
+
+        opacity: 0.9;
+    }
+
+    100% {
+        transform:
+            translateY(40px)
+            scale(0.7);
+
+        opacity: 0.2;
+    }
+}
+
+
+/* =========================================================
+   KEEP WEBSITE ABOVE GRAPH
+========================================================= */
+
+.page-content {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .churn-graph {
+        width: 180%;
+        left: -40%;
+
+        opacity: 0.22;
+    }
+
+    .graph-grid {
+        opacity: 0.5;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .churn-graph,
+    .churn-line,
+    .secondary-line,
+    .graph-points circle,
+    .graph-grid,
+    .particle {
+        animation: none;
+    }
+}
+/* =========================================================
+   MODERN CUSTOMER CHURN UI
+   Typography + Cards + Visual Polish
+========================================================= */
+
+body {
+    font-family:
+        "Inter",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+}
+
+
+/* =========================================================
+   HERO TYPOGRAPHY
+========================================================= */
+
+.eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    color: #60a5fa;
+
+    opacity: 0.9;
+}
+
+
+.hero h1 {
+    margin: 20px 0 16px;
+
+    font-size: clamp(42px, 5vw, 64px);
+
+    font-weight: 700;
+
+    letter-spacing: -2px;
+
+    line-height: 1.05;
+
+    color: #f8fafc;
+
+    text-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+
+.hero h1 span {
+    margin-top: 4px;
+
+    font-weight: 700;
+
+    background:
+        linear-gradient(
+            90deg,
+            #60a5fa,
+            #3b82f6,
+            #8b5cf6
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+    text-shadow: none;
+}
+
+
+.hero p {
+    max-width: 680px;
+
+    margin: 0 auto;
+
+    font-size: 16px;
+
+    line-height: 1.8;
+
+    color: #94a3b8;
+
+    letter-spacing: 0.1px;
+}
+
+
+/* =========================================================
+   ANALYSIS SECTION
+========================================================= */
+
+.options-section h2 {
+    font-size: 28px;
+
+    font-weight: 650;
+
+    letter-spacing: -0.5px;
+
+    color: #f8fafc;
+}
+
+
+.section-subtitle {
+    margin-top: 8px;
+
+    font-size: 14px;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   MODERN GLASS CARDS
+========================================================= */
+
+.option-card {
+    position: relative;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    padding: 28px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 23, 42, 0.78),
+            rgba(15, 23, 42, 0.58)
+        );
+
+    border: 1px solid rgba(148, 163, 184, 0.16);
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+/* Blue glow along top */
+
+.option-card::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 12%;
+
+    width: 76%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(59, 130, 246, 0.8),
+            transparent
+        );
+
+    opacity: 0.7;
+}
+
+
+/* Hover */
+
+.option-card:hover {
+    transform: translateY(-8px);
+
+    border-color:
+        rgba(59, 130, 246, 0.35);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.4),
+        0 0 35px rgba(37, 99, 235, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================================
+   ICON BOX
+========================================================= */
+
+.option-icon {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    font-size: 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(59, 130, 246, 0.15),
+            rgba(139, 92, 246, 0.10)
+        );
+
+    border:
+        1px solid rgba(96, 165, 250, 0.18);
+
+    box-shadow:
+        0 8px 25px rgba(37, 99, 235, 0.12);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+.option-card:hover .option-icon {
+    transform: scale(1.08);
+
+    box-shadow:
+        0 0 25px rgba(59, 130, 246, 0.25);
+}
+
+
+/* =========================================================
+   CARD TEXT
+========================================================= */
+
+.option-content h3 {
+    margin: 2px 0 9px;
+
+    font-size: 19px;
+
+    font-weight: 650;
+
+    letter-spacing: -0.3px;
+
+    color: #f1f5f9;
+}
+
+
+.option-content p {
+    margin: 0 0 16px;
+
+    max-width: 440px;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+
+    color: #94a3b8;
+}
+
+
+.option-link {
+    font-size: 14px;
+
+    font-weight: 650;
+
+    color: #60a5fa;
+
+    text-decoration: none;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.option-card:hover .option-link {
+    color: #93c5fd;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features {
+    margin-top: 20px;
+
+    padding-top: 30px;
+
+    border-top:
+        1px solid rgba(148, 163, 184, 0.12);
+}
+
+
+.feature strong {
+    font-size: 14px;
+
+    font-weight: 650;
+
+    letter-spacing: -0.1px;
+
+    color: #e2e8f0;
+}
+
+
+.feature span {
+    font-size: 13px;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    margin-top: 20px;
+
+    color: #475569;
+
+    font-size: 12px;
+
+    letter-spacing: 0.2px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .hero h1 {
+        font-size: 40px;
+
+        letter-spacing: -1.5px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .option-card {
+        padding: 24px;
+    }
+
+    .option-content h3 {
+        font-size: 18px;
+    }
+}
+/* =========================================================
+   PREMIUM GLASS UI
+========================================================= */
+
+.option-card {
+    background: rgba(15, 23, 42, 0.55) !important;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(148, 163, 184, 0.18) !important;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* Hover effect */
+
+.option-card:hover {
+    transform: translateY(-8px) scale(1.015);
+
+    border-color: rgba(96, 165, 250, 0.45) !important;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.35),
+        0 0 35px rgba(59, 130, 246, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+
+/* Card titles */
+
+.option-content h3 {
+    color: #f8fafc !important;
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    letter-spacing: -0.3px;
+}
+
+
+/* Card descriptions */
+
+.option-content p {
+    color: #94a3b8 !important;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+}
+
+
+/* Links */
+
+.option-link {
+    color: #60a5fa !important;
+
+    font-weight: 700;
+
+    text-shadow:
+        0 0 15px rgba(96, 165, 250, 0.25);
+}
+
+
+/* Icons */
+
+.option-icon {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(59, 130, 246, 0.18),
+            rgba(37, 99, 235, 0.08)
+        ) !important;
+
+    border: 1px solid rgba(96, 165, 250, 0.18);
+
+    box-shadow:
+        0 8px 25px rgba(37, 99, 235, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}

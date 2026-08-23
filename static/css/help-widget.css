@@ -1,0 +1,298 @@
+/* ============================================================
+   NEED HELP WIDGET — floating AI assistant (decision-tree bot)
+============================================================ */
+
+#help-widget-root {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* --- Floating trigger button --- */
+
+.help-fab {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(79, 209, 255, 0.4);
+    background: linear-gradient(135deg, #1b2a5e, #0d1638);
+    color: #eaf6ff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(15, 30, 80, 0.55), 0 0 0 0 rgba(79, 209, 255, 0.5);
+    animation: help-pulse 2.6s infinite;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.help-fab:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(15, 30, 80, 0.7);
+}
+
+.help-fab .help-fab-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #7fe3ff, #2f9fe0 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+@keyframes help-pulse {
+    0%   { box-shadow: 0 8px 24px rgba(15, 30, 80, 0.55), 0 0 0 0 rgba(79, 209, 255, 0.45); }
+    70%  { box-shadow: 0 8px 24px rgba(15, 30, 80, 0.55), 0 0 0 14px rgba(79, 209, 255, 0); }
+    100% { box-shadow: 0 8px 24px rgba(15, 30, 80, 0.55), 0 0 0 0 rgba(79, 209, 255, 0); }
+}
+
+#help-widget-root.open .help-fab { display: none; }
+
+/* --- Chat panel --- */
+
+.help-panel {
+    display: none;
+    flex-direction: column;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    height: 520px;
+    max-height: calc(100vh - 100px);
+    border-radius: 18px;
+    overflow: hidden;
+    background: #0b1330;
+    border: 1px solid rgba(79, 209, 255, 0.25);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+}
+
+#help-widget-root.open .help-panel { display: flex; }
+
+.help-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, #16214a, #0a1230);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.help-header .bot-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #7fe3ff, #2f9fe0 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.help-header .help-title {
+    flex: 1;
+}
+
+.help-header .help-title strong {
+    display: block;
+    color: #fff;
+    font-size: 15px;
+}
+
+.help-header .help-title span {
+    display: block;
+    color: #8fb3e0;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.help-header .help-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 6px #4ade80;
+    margin-right: 4px;
+    display: inline-block;
+}
+
+.help-close-btn {
+    background: none;
+    border: none;
+    color: #9fb6da;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+
+.help-close-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* --- Messages area --- */
+
+.help-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.help-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.help-messages::-webkit-scrollbar-thumb {
+    background: rgba(79, 209, 255, 0.3);
+    border-radius: 10px;
+}
+
+.help-msg {
+    display: flex;
+    gap: 8px;
+    max-width: 88%;
+    animation: help-fade-in 0.25s ease;
+}
+
+@keyframes help-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.help-msg.bot {
+    align-self: flex-start;
+}
+
+.help-msg.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.help-msg .mini-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+.help-msg.bot .mini-avatar {
+    background: radial-gradient(circle at 35% 30%, #7fe3ff, #2f9fe0 70%);
+}
+
+.help-msg.user .mini-avatar {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.help-bubble {
+    padding: 10px 13px;
+    border-radius: 14px;
+    font-size: 13.5px;
+    line-height: 1.5;
+}
+
+.help-msg.bot .help-bubble {
+    background: rgba(79, 209, 255, 0.08);
+    border: 1px solid rgba(79, 209, 255, 0.18);
+    color: #e6f2ff;
+    border-top-left-radius: 4px;
+}
+
+.help-msg.user .help-bubble {
+    background: linear-gradient(135deg, #2f6fd8, #1b4fb0);
+    color: #fff;
+    border-top-right-radius: 4px;
+}
+
+/* --- Option buttons (the "multiple questions" the bot offers) --- */
+
+.help-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 2px 16px 14px 16px;
+}
+
+.help-option-btn {
+    text-align: left;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(79, 209, 255, 0.3);
+    background: rgba(255, 255, 255, 0.03);
+    color: #cfe8ff;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.help-option-btn:hover {
+    background: rgba(79, 209, 255, 0.14);
+    border-color: rgba(79, 209, 255, 0.55);
+    transform: translateX(2px);
+}
+
+.help-option-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+    transform: none;
+}
+
+.help-typing {
+    display: flex;
+    gap: 4px;
+    padding: 10px 13px;
+}
+
+.help-typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7fe3ff;
+    animation: help-typing-bounce 1.2s infinite ease-in-out;
+}
+
+.help-typing span:nth-child(2) { animation-delay: 0.15s; }
+.help-typing span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes help-typing-bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.help-footer {
+    padding: 10px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+}
+
+.help-restart-btn {
+    background: none;
+    border: none;
+    color: #7fb8ff;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.help-restart-btn:hover {
+    color: #a8d4ff;
+}
+
+@media (max-width: 480px) {
+    .help-panel {
+        width: calc(100vw - 24px);
+        right: -12px;
+    }
+}

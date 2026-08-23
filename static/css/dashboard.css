@@ -1,0 +1,872 @@
+/* =========================================
+   CUSTOMER CHURN ANALYTICS DASHBOARD
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.dashboard-container {
+    width: 94%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 35px 0 50px;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 34px;
+    color: #2563eb;
+}
+
+.dashboard-header p {
+    margin: 8px 0 0;
+    color: #64748b;
+    font-size: 16px;
+}
+
+.back-button {
+    text-decoration: none;
+    background: #2563eb;
+    color: white;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.back-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   KPI CARDS
+========================================= */
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.kpi-card {
+    background: white;
+    padding: 24px;
+    border-radius: 14px;
+    border-left: 5px solid #2563eb;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.06);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+}
+
+.kpi-card strong {
+    display: block;
+    font-size: 30px;
+    margin: 10px 0;
+    color: #0f172a;
+}
+
+.kpi-title {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.kpi-card small {
+    color: #64748b;
+}
+
+.churn-kpi {
+    border-left-color: #ef4444;
+}
+
+.stay-kpi {
+    border-left-color: #22c55e;
+}
+
+.rate-kpi {
+    border-left-color: #f59e0b;
+}
+
+/* =========================================
+   GENERAL CARD
+========================================= */
+
+.dashboard-card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.06);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin: 0;
+    color: #1e3a8a;
+    font-size: 22px;
+}
+
+/* =========================================
+   FILTERS
+========================================= */
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-group select:hover {
+    border-color: #94a3b8;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.reset-button {
+    border: none;
+    background: #e2e8f0;
+    color: #334155;
+    padding: 9px 15px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.reset-button:hover {
+    background: #cbd5e1;
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   CHART GRID
+========================================= */
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.chart-card {
+    min-height: 390px;
+}
+
+.chart-header h2 {
+    margin: 0;
+    color: #1e3a8a;
+    font-size: 21px;
+}
+
+.chart-header p {
+    margin: 7px 0 0;
+    color: #64748b;
+}
+
+.chart-container {
+    position: relative;
+    height: 280px;
+    margin-top: 20px;
+}
+
+/* =========================================
+   INSIGHTS
+========================================= */
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.insight {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 10px;
+
+    border: 1px solid rgba(148, 163, 184, 0.12);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.insight:hover {
+    transform: translateY(-3px);
+    background: #ffffff;
+
+    box-shadow:
+        0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+.insight h3 {
+    margin: 0 0 8px;
+}
+
+.insight p {
+    margin: 0;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.dashboard-footer {
+    text-align: center;
+    padding: 25px;
+    color: #64748b;
+}
+
+.dashboard-footer p {
+    margin: 0 0 5px;
+}
+
+/* =========================================
+   LIVE ANIMATED BACKGROUND
+========================================= */
+
+body {
+    position: relative;
+    overflow-x: hidden;
+    background: #020617 !important;
+    isolation: isolate;
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.25;
+    z-index: -1;
+    pointer-events: none;
+}
+
+body::before {
+    background: #2563eb;
+    top: -150px;
+    left: -150px;
+    animation: dashboardGlow1 12s ease-in-out infinite alternate;
+}
+
+body::after {
+    background: #7c3aed;
+    right: -150px;
+    bottom: -150px;
+    animation: dashboardGlow2 15s ease-in-out infinite alternate;
+}
+
+@keyframes dashboardGlow1 {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(180px, 100px) scale(1.2);
+    }
+
+    100% {
+        transform: translate(50px, 250px) scale(0.9);
+    }
+}
+
+@keyframes dashboardGlow2 {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(-180px, -120px) scale(1.25);
+    }
+
+    100% {
+        transform: translate(-50px, -250px) scale(0.9);
+    }
+}
+
+/* =========================================
+   3D CUSTOMER CHURN VISUALIZATION
+========================================= */
+
+.churn-3d-section {
+    width: 100%;
+    margin: 25px 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10, 25, 60, 0.95),
+            rgba(4, 12, 35, 0.98)
+        );
+
+    border: 1px solid rgba(96, 165, 250, 0.25);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.30),
+        inset 0 0 40px rgba(37, 99, 235, 0.08);
+}
+
+.churn-3d-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 22px 28px;
+
+    border-bottom:
+        1px solid rgba(148, 163, 184, 0.15);
+}
+
+.churn-3d-header h2 {
+    margin: 0 0 6px;
+    color: #f8fafc;
+    font-size: 24px;
+}
+
+.churn-3d-header p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.churn-3d-controls {
+    color: #60a5fa;
+    font-size: 13px;
+
+    padding: 10px 15px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(59, 130, 246, 0.08);
+
+    border:
+        1px solid rgba(59, 130, 246, 0.20);
+}
+
+.churn3d-container {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+}
+
+.churn3d-container:active {
+    cursor: grabbing;
+}
+
+.churn3d-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+/* =========================================
+   DARK UI ICONS
+========================================= */
+
+.icon,
+.form-icon,
+.input-icon,
+.service-icon,
+.field-icon,
+.insight-icon,
+button svg,
+label svg {
+    color: #172033 !important;
+    fill: #172033 !important;
+    stroke: #172033 !important;
+}
+
+/* Font Awesome / Bootstrap / Lucide */
+
+.fa,
+.fas,
+.far,
+.fab,
+.bi,
+.lucide {
+    color: #172033 !important;
+}
+
+/* =========================================
+   INSIGHT CARD ICONS
+========================================= */
+
+.insight-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    font-size: 24px;
+
+    color: #172033 !important;
+
+    background: #e8edf5;
+
+    border-radius: 12px;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(23, 32, 51, 0.06);
+}
+
+.insight-icon svg {
+    width: 24px;
+    height: 24px;
+
+    color: #172033 !important;
+    fill: #172033 !important;
+    stroke: #172033 !important;
+}
+
+/* If the icon is an image */
+
+.icon-box img,
+.icon-container img,
+.service-icon img,
+.form-icon img,
+.insight-icon img {
+    width: 24px;
+    height: 24px;
+
+    filter: brightness(0.25) saturate(0.8);
+}
+
+/* =========================================
+   DARK UI SYMBOLS
+========================================= */
+
+.icon-box,
+.icon-container,
+.service-icon,
+.form-icon {
+    color: #172033 !important;
+    background: #e8edf5;
+}
+
+/* =========================================
+   SELECT / FORM CONTROLS
+========================================= */
+
+select {
+    color: #172033;
+}
+
+select option {
+    color: #172033;
+    background: white;
+}
+
+label {
+    color: #172033 !important;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 750px) {
+
+    .churn-3d-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .churn3d-container {
+        height: 400px;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .dashboard-container {
+        width: 94%;
+        padding-top: 25px;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 28px;
+    }
+
+    .dashboard-card {
+        padding: 20px;
+    }
+}
+
+/* =========================================
+   EXTRA POLISH
+========================================= */
+
+.dashboard-card,
+.kpi-card,
+.chart-card {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.09);
+}
+
+/* Keep dashboard content above animated background */
+
+.dashboard-container,
+.dashboard-card,
+.kpi-grid,
+.charts-grid,
+.insights-grid,
+.churn-3d-section {
+    position: relative;
+    z-index: 1;
+}
+/* =========================================================
+   FULL DARK DASHBOARD UI
+   Add this at the VERY END of dashboard.css
+========================================================= */
+
+/* Main dashboard background */
+body {
+    background: #020617 !important;
+    color: #e2e8f0;
+}
+
+/* =========================================================
+   DARK CARDS
+========================================================= */
+
+.dashboard-card,
+.kpi-card,
+.chart-card {
+    background: linear-gradient(
+        145deg,
+        #0b1733,
+        #071126
+    ) !important;
+
+    color: #e2e8f0 !important;
+
+    border: 1px solid rgba(96, 165, 250, 0.18);
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.28),
+        inset 0 0 30px rgba(37, 99, 235, 0.025);
+}
+
+/* Card hover */
+.kpi-card:hover,
+.dashboard-card:hover {
+    border-color: rgba(96, 165, 250, 0.35);
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(37, 99, 235, 0.06);
+}
+
+/* =========================================================
+   KPI CARDS
+========================================================= */
+
+.kpi-card strong {
+    color: #f8fafc !important;
+}
+
+.kpi-title {
+    color: #cbd5e1 !important;
+}
+
+.kpi-card small {
+    color: #94a3b8 !important;
+}
+
+/* =========================================================
+   HEADINGS
+========================================================= */
+
+.dashboard-header h1 {
+    color: #60a5fa !important;
+}
+
+.dashboard-header p {
+    color: #94a3b8 !important;
+}
+
+.section-header h2,
+.chart-header h2 {
+    color: #93c5fd !important;
+}
+
+.chart-header p {
+    color: #94a3b8 !important;
+}
+
+/* =========================================================
+   FILTER SECTION
+========================================================= */
+
+.filter-group label {
+    color: #cbd5e1 !important;
+}
+
+.filter-group select {
+    background: #0b1733 !important;
+    color: #e2e8f0 !important;
+
+    border: 1px solid rgba(96, 165, 250, 0.25) !important;
+
+    box-shadow:
+        inset 0 0 15px rgba(37, 99, 235, 0.03);
+}
+
+.filter-group select:hover {
+    border-color: rgba(96, 165, 250, 0.45) !important;
+}
+
+.filter-group select:focus {
+    border-color: #3b82f6 !important;
+
+    box-shadow:
+        0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+select option {
+    background: #0b1733 !important;
+    color: #e2e8f0 !important;
+}
+
+/* Reset button */
+
+.reset-button {
+    background: #172554 !important;
+    color: #bfdbfe !important;
+
+    border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.reset-button:hover {
+    background: #1e3a8a !important;
+    color: white !important;
+}
+
+/* =========================================================
+   INSIGHT CARDS
+========================================================= */
+
+.insight {
+    background: #0b1733 !important;
+
+    border: 1px solid rgba(96, 165, 250, 0.14) !important;
+
+    color: #e2e8f0 !important;
+}
+
+.insight:hover {
+    background: #0f1f3d !important;
+
+    border-color: rgba(96, 165, 250, 0.3) !important;
+}
+
+.insight h3 {
+    color: #f1f5f9 !important;
+}
+
+.insight p {
+    color: #94a3b8 !important;
+}
+
+/* =========================================================
+   DARK ICONS
+========================================================= */
+
+.insight-icon {
+    background: #172554 !important;
+
+    color: #93c5fd !important;
+
+    border: 1px solid rgba(96, 165, 250, 0.15);
+
+    box-shadow:
+        0 0 15px rgba(37, 99, 235, 0.08);
+}
+
+.insight-icon svg {
+    color: #93c5fd !important;
+    fill: #93c5fd !important;
+    stroke: #93c5fd !important;
+}
+
+/* =========================================================
+   CHART AREA
+========================================================= */
+
+.chart-container {
+    background: transparent !important;
+}
+
+/* =========================================================
+   3D SECTION
+========================================================= */
+
+.churn-3d-section {
+    background:
+        linear-gradient(
+            145deg,
+            #0b1733,
+            #030b20
+        ) !important;
+
+    border: 1px solid rgba(96, 165, 250, 0.3);
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        inset 0 0 50px rgba(37, 99, 235, 0.06);
+}
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-button {
+    background: #172554 !important;
+    color: #bfdbfe !important;
+
+    border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.back-button:hover {
+    background: #1d4ed8 !important;
+    color: white !important;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.dashboard-footer {
+    color: #64748b !important;
+}
+
+/* =========================================================
+   DARK SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+::-webkit-scrollbar-track {
+    background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #172554;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1e3a8a;
+}
