@@ -1,0 +1,37 @@
+<!-- ============================================================
+     NEED HELP WIDGET
+     Guided assistant: viewer picks a question, bot responds,
+     then offers the next relevant set of questions.
+     Include this partial before </body> on every page, and add
+     help-widget.css to <head> + help-widget.js before </body>.
+============================================================ -->
+
+<div id="help-widget-root">
+
+    <button type="button" class="help-fab">
+        <span class="help-fab-icon">🤖</span>
+        Need Help?
+    </button>
+
+    <div class="help-panel">
+
+        <div class="help-header">
+            <div class="bot-avatar">🤖</div>
+            <div class="help-title">
+                <strong><span class="help-status-dot"></span>Churn Assistant</strong>
+                <span>Ask me about this site</span>
+            </div>
+            <button type="button" class="help-close-btn" aria-label="Close">×</button>
+        </div>
+
+        <div class="help-messages"></div>
+
+        <div class="help-options"></div>
+
+        <div class="help-footer">
+            <button type="button" class="help-restart-btn">↺ Restart conversation</button>
+        </div>
+
+    </div>
+
+</div>

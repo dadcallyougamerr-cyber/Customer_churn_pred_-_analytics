@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Churn Analytics Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/help-widget.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/enhancements.css') }}">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Orbit Controls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+
+        /* ============================================================
+           3D CUSTOMER CHURN
+        ============================================================ */
+
+        .churn-3d-section {
+            margin-bottom: 24px;
+            border-radius: 18px;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(8, 25, 58, 0.96),
+                    rgba(8, 15, 38, 0.96)
+                );
+
+            border: 1px solid rgba(59, 130, 246, 0.35);
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.25);
+
+            position: relative;
+        }
+
+
+        .churn-3d-header {
+            padding: 20px 26px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 20px;
+
+            position: relative;
+            z-index: 5;
+        }
+
+
+        .churn-3d-header h2 {
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+
+        .churn-3d-header p {
+            margin: 6px 0 0;
+
+            color: #94a3b8;
+
+            font-size: 14px;
+        }
+
+
+        .churn-3d-controls {
+            padding: 10px 16px;
+
+            border-radius: 10px;
+
+            background: rgba(15, 35, 75, 0.75);
+
+            border: 1px solid rgba(59, 130, 246, 0.3);
+
+            color: #93c5fd;
+
+            font-size: 13px;
+
+            white-space: nowrap;
+        }
+
+
+        /*
+         * ACTUAL 3D AREA
+         */
+
+        #churn3d-container {
+
+            width: 100%;
+
+            height: 500px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            cursor: grab;
+
+            background:
+                radial-gradient(
+                    circle at 50% 50%,
+                    rgba(30, 64, 175, 0.12),
+                    transparent 55%
+                );
+        }
+
+
+        #churn3d-container:active {
+            cursor: grabbing;
+        }
+
+
+        #churn3d-container canvas {
+
+            width: 100% !important;
+            height: 100% !important;
+
+            display: block;
+        }
+
+
+        /*
+         * LEGEND
+         */
+
+        .churn-3d-legend {
+
+            position: absolute;
+
+            bottom: 18px;
+            left: 20px;
+
+            display: flex;
+            gap: 18px;
+
+            padding: 9px 14px;
+
+            border-radius: 10px;
+
+            background: rgba(2, 6, 23, 0.72);
+
+            border: 1px solid rgba(148, 163, 184, 0.15);
+
+            backdrop-filter: blur(8px);
+
+            color: #cbd5e1;
+
+            font-size: 12px;
+
+            z-index: 4;
+
+            pointer-events: none;
+        }
+
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+
+        .legend-dot {
+            width: 9px;
+            height: 9px;
+
+            border-radius: 50%;
+        }
+
+
+        .legend-red {
+            background: #ef4444;
+
+            box-shadow:
+                0 0 10px rgba(239, 68, 68, 0.7);
+        }
+
+
+        .legend-green {
+            background: #22c55e;
+
+            box-shadow:
+                0 0 10px rgba(34, 197, 94, 0.7);
+        }
+
+
+        /*
+         * MOBILE
+         */
+
+        @media (max-width: 800px) {
+
+            .churn-3d-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .churn-3d-controls {
+                white-space: normal;
+            }
+
+            #churn3d-container {
+                height: 420px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+    <!-- ============================================================
+         HEADER
+    ============================================================ -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <h1>
+                Customer Churn Analytics
+            </h1>
+
+            <p>
+                Business intelligence dashboard for customer retention analysis
+            </p>
+
+        </div>
+
+
+        <a href="/" class="back-button">
+            ← Home
+        </a>
+
+    </header>
+
+
+
+    <!-- ============================================================
+         KPI CARDS
+    ============================================================ -->
+
+    <section class="kpi-grid">
+
+
+        <div class="kpi-card">
+
+            <span class="kpi-title">
+                Total Customers
+            </span>
+
+            <strong class="kpi-total" data-count-target="{{ total_customers }}">
+                0
+            </strong>
+
+            <small>
+                Customers analyzed
+            </small>
+
+        </div>
+
+
+        <div class="kpi-card churn-kpi">
+
+            <span class="kpi-title">
+                Churned Customers
+            </span>
+
+            <strong class="kpi-churned" data-count-target="{{ churned_customers }}">
+                0
+            </strong>
+
+            <small>
+                Customers who left
+            </small>
+
+        </div>
+
+
+        <div class="kpi-card stay-kpi">
+
+            <span class="kpi-title">
+                Retained Customers
+            </span>
+
+            <strong class="kpi-retained" data-count-target="{{ stayed_customers }}">
+                0
+            </strong>
+
+            <small>
+                Customers who stayed
+            </small>
+
+        </div>
+
+
+        <div class="kpi-card rate-kpi">
+
+            <span class="kpi-title">
+                Overall Churn Rate
+            </span>
+
+            <strong class="kpi-rate" data-count-target="{{ churn_rate }}" data-count-suffix="%">
+                0%
+            </strong>
+
+            <small>
+                Customer churn rate
+            </small>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================================================
+         MODEL PERFORMANCE
+    ============================================================ -->
+
+    {% if model_metrics %}
+    <section class="model-perf-section glow-lift">
+
+        <div class="model-perf-header">
+            <div>
+                <h2>Model Performance</h2>
+                <p>{{ model_metrics.best_model }} selected via 5-fold cross-validation across 4 candidate models, then hyperparameter-tuned.</p>
+            </div>
+            <span class="model-badge">✓ {{ model_metrics.best_model }} — Best of {{ model_metrics.comparison|length }}</span>
+        </div>
+
+        <div class="model-metric-grid">
+
+            <div class="model-metric-card">
+                <strong data-count-target="{{ model_metrics.test_metrics.accuracy }}" data-count-suffix="%">0%</strong>
+                <span>Accuracy</span>
+            </div>
+
+            <div class="model-metric-card">
+                <strong data-count-target="{{ (model_metrics.test_metrics.roc_auc * 100)|round(1) }}" data-count-suffix="%">0%</strong>
+                <span>ROC-AUC</span>
+            </div>
+
+            <div class="model-metric-card">
+                <strong data-count-target="{{ (model_metrics.test_metrics.precision_churn * 100)|round(1) }}" data-count-suffix="%">0%</strong>
+                <span>Precision</span>
+            </div>
+
+            <div class="model-metric-card">
+                <strong data-count-target="{{ (model_metrics.test_metrics.recall_churn * 100)|round(1) }}" data-count-suffix="%">0%</strong>
+                <span>Recall</span>
+            </div>
+
+            <div class="model-metric-card">
+                <strong data-count-target="{{ (model_metrics.test_metrics.f1_churn * 100)|round(1) }}" data-count-suffix="%">0%</strong>
+                <span>F1-Score</span>
+            </div>
+
+        </div>
+
+        <div class="model-compare-list">
+            {% for m in model_metrics.comparison %}
+            <div class="model-compare-row {% if m.model == model_metrics.best_model %}is-best{% endif %}">
+                <span>{{ m.model }}{% if m.model == model_metrics.best_model %} ✓{% endif %}</span>
+                <div class="model-bar-track">
+                    <div class="model-bar-fill" data-bar-target="{{ (m.cv_roc_auc * 100)|round(1) }}"></div>
+                </div>
+                <span>{{ (m.cv_roc_auc * 100)|round(1) }}%</span>
+            </div>
+            {% endfor %}
+        </div>
+
+    </section>
+    {% endif %}
+
+
+    <!-- ============================================================
+         INTERACTIVE 3D MODEL
+    ============================================================ -->
+
+    <section class="churn-3d-section">
+
+
+        <div class="churn-3d-header">
+
+            <div>
+
+                <h2>
+                    3D Customer Churn Intelligence
+                </h2>
+
+                <p>
+                    Explore customer behavior and churn risk in 3D
+                </p>
+
+            </div>
+
+
+            <div class="churn-3d-controls">
+
+                🖱️ Drag to rotate
+                &nbsp; • &nbsp;
+                🔍 Scroll to zoom
+                &nbsp; • &nbsp;
+                ✋ Right-drag to move
+
+            </div>
+
+        </div>
+
+
+        <div id="churn3d-container">
+
+
+            <div class="churn-3d-legend">
+
+                <div class="legend-item">
+
+                    <span class="legend-dot legend-red"></span>
+
+                    High Churn Risk
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-dot legend-green"></span>
+
+                    Retained
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ============================================================
+         FILTERS
+    ============================================================ -->
+
+    <section class="dashboard-card">
+
+
+        <div class="section-header">
+
+            <h2>
+                Analytics Filters
+            </h2>
+
+
+            <button
+                onclick="resetFilters()"
+                class="reset-button">
+
+                Reset Filters
+
+            </button>
+
+        </div>
+
+
+        <div class="filter-grid">
+
+
+            <div class="filter-group">
+
+                <label>
+                    Contract
+                </label>
+
+
+                <select id="contractFilter">
+
+                    <option value="All">
+                        All Contracts
+                    </option>
+
+                    {% for contract in contracts %}
+
+                    <option value="{{ contract }}">
+                        {{ contract }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+
+            <div class="filter-group">
+
+                <label>
+                    Internet Service
+                </label>
+
+
+                <select id="internetFilter">
+
+                    <option value="All">
+                        All Services
+                    </option>
+
+                    {% for service in internet_services %}
+
+                    <option value="{{ service }}">
+                        {{ service }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+
+            <div class="filter-group">
+
+                <label>
+                    Gender
+                </label>
+
+
+                <select id="genderFilter">
+
+                    <option value="All">
+                        All Genders
+                    </option>
+
+                    {% for gender in genders %}
+
+                    <option value="{{ gender }}">
+                        {{ gender }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ============================================================
+         CHARTS
+    ============================================================ -->
+
+    <section class="charts-grid">
+
+
+        <!-- CHURN DISTRIBUTION -->
+
+        <div class="dashboard-card chart-card">
+
+            <div class="chart-header">
+
+                <h2>
+                    Customer Churn Distribution
+                </h2>
+
+                <p>
+                    Churned vs retained customers
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="churnChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CONTRACT -->
+
+        <div class="dashboard-card chart-card">
+
+            <div class="chart-header">
+
+                <h2>
+                    Churn by Contract
+                </h2>
+
+                <p>
+                    Churn behavior across contract types
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="contractChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- INTERNET -->
+
+        <div class="dashboard-card chart-card">
+
+            <div class="chart-header">
+
+                <h2>
+                    Churn by Internet Service
+                </h2>
+
+                <p>
+                    Customer churn across internet services
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="internetChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TENURE -->
+
+        <div class="dashboard-card chart-card">
+
+            <div class="chart-header">
+
+                <h2>
+                    Customer Tenure Distribution
+                </h2>
+
+                <p>
+                    Customers grouped by tenure
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="tenureChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ============================================================
+         BUSINESS INSIGHTS
+    ============================================================ -->
+
+    <section class="dashboard-card insights-card">
+
+
+        <div class="section-header">
+
+            <h2>
+                Key Business Insights
+            </h2>
+
+        </div>
+
+
+        <div class="insights-grid">
+
+
+            <div class="insight">
+
+                <span class="insight-icon">
+                    📊
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Overall Churn
+                    </h3>
+
+                    <p>
+                        {{ churn_rate }}% of customers in the dataset
+                        have churned.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="insight">
+
+                <span class="insight-icon">
+                    👥
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Customer Base
+                    </h3>
+
+                    <p>
+                        The dataset contains
+                        {{ total_customers }}
+                        customers for analysis.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="insight">
+
+                <span class="insight-icon">
+                    🎯
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Retention Opportunity
+                    </h3>
+
+                    <p>
+                        Churn analytics can help identify customers
+                        who may require retention strategies.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ============================================================
+         FOOTER
+    ============================================================ -->
+
+    <footer class="dashboard-footer">
+
+        <p>
+            Customer Churn Prediction & Analytics System
+        </p>
+
+        <span>
+            Powered by Machine Learning + Flask
+        </span>
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- ============================================================
+     FLASK DATA
+============================================================ -->
+
+<script>
+
+    window.dashboardData =
+        {{ dashboard_data | tojson }};
+
+</script>
+
+
+
+<!-- ============================================================
+     3D CUSTOMER CHURN ENGINE
+============================================================ -->
+
+<script>
+
+(function () {
+
+    const container =
+        document.getElementById("churn3d-container");
+
+    if (!container) {
+        console.error("3D container not found.");
+        return;
+    }
+
+
+    /* ============================================================
+       SCENE
+    ============================================================ */
+
+    const scene =
+        new THREE.Scene();
+
+
+    /* ============================================================
+       CAMERA
+    ============================================================ */
+
+    const camera =
+        new THREE.PerspectiveCamera(
+            45,
+            container.clientWidth /
+            container.clientHeight,
+            0.1,
+            1000
+        );
+
+
+    camera.position.set(
+        8,
+        6,
+        11
+    );
+
+
+    /* ============================================================
+       RENDERER
+    ============================================================ */
+
+    const renderer =
+        new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true
+        });
+
+
+    renderer.setPixelRatio(
+        Math.min(
+            window.devicePixelRatio,
+            2
+        )
+    );
+
+
+    renderer.setSize(
+        container.clientWidth,
+        container.clientHeight
+    );
+
+
+    renderer.setClearColor(
+        0x000000,
+        0
+    );
+
+
+    container.appendChild(
+        renderer.domElement
+    );
+
+
+    /* ============================================================
+       LIGHTING
+    ============================================================ */
+
+    const ambient =
+        new THREE.AmbientLight(
+            0xffffff,
+            1.6
+        );
+
+    scene.add(ambient);
+
+
+    const blueLight =
+        new THREE.PointLight(
+            0x3b82f6,
+            5,
+            30
+        );
+
+    blueLight.position.set(
+        6,
+        7,
+        7
+    );
+
+    scene.add(blueLight);
+
+
+    const purpleLight =
+        new THREE.PointLight(
+            0x8b5cf6,
+            4,
+            30
+        );
+
+    purpleLight.position.set(
+        -7,
+        4,
+        -6
+    );
+
+    scene.add(purpleLight);
+
+
+
+    /* ============================================================
+       MAIN GROUP
+    ============================================================ */
+
+    const churnGroup =
+        new THREE.Group();
+
+    scene.add(
+        churnGroup
+    );
+
+
+    /* ============================================================
+       FLOOR GRID
+    ============================================================ */
+
+    const grid =
+        new THREE.GridHelper(
+            16,
+            24,
+            0x3b82f6,
+            0x1e3a8a
+        );
+
+
+    grid.position.y =
+        -2.2;
+
+
+    grid.material.transparent =
+        true;
+
+
+    grid.material.opacity =
+        0.22;
+
+
+    churnGroup.add(
+        grid
+    );
+
+
+
+    /* ============================================================
+       CUSTOMER DATA
+    ============================================================ */
+
+    const customerPoints = [];
+
+
+    for (
+        let i = 0;
+        i < 140;
+        i++
+    ) {
+
+
+        const x =
+            (Math.random() - 0.5) * 12;
+
+
+        const z =
+            (Math.random() - 0.5) * 9;
+
+
+        const risk =
+            Math.random();
+
+
+        const y =
+            Math.sin(x * 0.65) * 0.75 +
+            Math.cos(z * 0.55) * 0.65 +
+            risk * 2.2 -
+            0.5;
+
+
+        const isChurn =
+            risk > 0.68;
+
+
+        const geometry =
+            new THREE.SphereGeometry(
+                isChurn
+                    ? 0.115
+                    : 0.075,
+                16,
+                16
+            );
+
+
+        const material =
+            new THREE.MeshStandardMaterial({
+
+                color:
+                    isChurn
+                        ? 0xef4444
+                        : 0x22c55e,
+
+                emissive:
+                    isChurn
+                        ? 0x7f1d1d
+                        : 0x14532d,
+
+                emissiveIntensity:
+                    0.9,
+
+                metalness:
+                    0.25,
+
+                roughness:
+                    0.28
+
+            });
+
+
+        const point =
+            new THREE.Mesh(
+                geometry,
+                material
+            );
+
+
+        point.position.set(
+            x,
+            y,
+            z
+        );
+
+
+        point.userData = {
+            risk: risk,
+            churn: isChurn
+        };
+
+
+        churnGroup.add(
+            point
+        );
+
+
+        customerPoints.push(
+            point
+        );
+
+    }
+
+
+
+    /* ============================================================
+       CONNECTING DATA CURVES
+    ============================================================ */
+
+    const curveMaterial =
+        new THREE.LineBasicMaterial({
+
+            color: 0x60a5fa,
+
+            transparent: true,
+
+            opacity: 0.22
+
+        });
+
+
+    for (
+        let row = 0;
+        row < 5;
+        row++
+    ) {
+
+
+        const curvePoints = [];
+
+
+        for (
+            let j = 0;
+            j < 25;
+            j++
+        ) {
+
+
+            const x =
+                -6 +
+                j * 0.5;
+
+
+            const y =
+                Math.sin(
+                    x * 0.65 +
+                    row
+                ) * 0.45 +
+                row * 0.45 -
+                1.3;
+
+
+            const z =
+                -3.5 +
+                row * 1.7;
+
+
+            curvePoints.push(
+                new THREE.Vector3(
+                    x,
+                    y,
+                    z
+                )
+            );
+
+        }
+
+
+        const geometry =
+            new THREE.BufferGeometry()
+                .setFromPoints(
+                    curvePoints
+                );
+
+
+        const line =
+            new THREE.Line(
+                geometry,
+                curveMaterial
+            );
+
+
+        churnGroup.add(
+            line
+        );
+
+    }
+
+
+
+    /* ============================================================
+       FLOATING PARTICLES
+    ============================================================ */
+
+    const particleCount =
+        180;
+
+
+    const particleGeometry =
+        new THREE.BufferGeometry();
+
+
+    const particlePositions =
+        [];
+
+
+    for (
+        let i = 0;
+        i < particleCount;
+        i++
+    ) {
+
+
+        particlePositions.push(
+
+            (Math.random() - 0.5) * 18,
+
+            (Math.random() - 0.5) * 10,
+
+            (Math.random() - 0.5) * 14
+
+        );
+
+    }
+
+
+    particleGeometry.setAttribute(
+        "position",
+
+        new THREE.Float32BufferAttribute(
+            particlePositions,
+            3
+        )
+    );
+
+
+    const particleMaterial =
+        new THREE.PointsMaterial({
+
+            color: 0x60a5fa,
+
+            size: 0.045,
+
+            transparent: true,
+
+            opacity: 0.45
+
+        });
+
+
+    const particles =
+        new THREE.Points(
+            particleGeometry,
+            particleMaterial
+        );
+
+
+    scene.add(
+        particles
+    );
+
+
+
+    /* ============================================================
+       ORBIT CONTROLS
+    ============================================================ */
+
+    const controls =
+        new THREE.OrbitControls(
+            camera,
+            renderer.domElement
+        );
+
+
+    controls.enableDamping =
+        true;
+
+
+    controls.dampingFactor =
+        0.055;
+
+
+    controls.enableZoom =
+        true;
+
+
+    controls.enablePan =
+        true;
+
+
+    controls.minDistance =
+        4;
+
+
+    controls.maxDistance =
+        25;
+
+
+    controls.rotateSpeed =
+        0.65;
+
+
+    controls.zoomSpeed =
+        0.8;
+
+
+    controls.panSpeed =
+        0.7;
+
+
+    controls.target.set(
+        0,
+        0,
+        0
+    );
+
+
+    controls.update();
+
+
+
+    /* ============================================================
+       MOUSE / HOVER EFFECT
+    ============================================================ */
+
+    const raycaster =
+        new THREE.Raycaster();
+
+
+    const mouse =
+        new THREE.Vector2();
+
+
+    let hoveredPoint =
+        null;
+
+
+    container.addEventListener(
+        "mousemove",
+        function (event) {
+
+
+            const rect =
+                container.getBoundingClientRect();
+
+
+            mouse.x =
+                (
+                    (event.clientX - rect.left) /
+                    rect.width
+                ) * 2 - 1;
+
+
+            mouse.y =
+                -(
+                    (event.clientY - rect.top) /
+                    rect.height
+                ) * 2 + 1;
+
+
+            raycaster.setFromCamera(
+                mouse,
+                camera
+            );
+
+
+            const intersections =
+                raycaster.intersectObjects(
+                    customerPoints
+                );
+
+
+            if (
+                hoveredPoint &&
+                !intersections.length
+            ) {
+
+                hoveredPoint.scale.set(
+                    1,
+                    1,
+                    1
+                );
+
+                hoveredPoint = null;
+
+            }
+
+
+            if (
+                intersections.length
+            ) {
+
+                const point =
+                    intersections[0].object;
+
+
+                if (
+                    hoveredPoint !== point
+                ) {
+
+                    if (hoveredPoint) {
+
+                        hoveredPoint.scale.set(
+                            1,
+                            1,
+                            1
+                        );
+
+                    }
+
+
+                    hoveredPoint =
+                        point;
+
+
+                    point.scale.set(
+                        1.8,
+                        1.8,
+                        1.8
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+
+    /* ============================================================
+       ANIMATION
+    ============================================================ */
+
+    const clock =
+        new THREE.Clock();
+
+
+    function animate() {
+
+
+        requestAnimationFrame(
+            animate
+        );
+
+
+        const time =
+            clock.getElapsedTime();
+
+
+        /*
+         * Gentle automatic movement.
+         *
+         * User can still grab the model
+         * and inspect it from every direction.
+         */
+
+        if (
+            !controls.state ||
+            controls.state === -1
+        ) {
+
+            churnGroup.rotation.y +=
+                0.0015;
+
+        }
+
+
+        /*
+         * Floating motion
+         */
+
+        churnGroup.position.y =
+            Math.sin(
+                time * 0.45
+            ) * 0.12;
+
+
+        churnGroup.rotation.x =
+            Math.sin(
+                time * 0.18
+            ) * 0.035;
+
+
+        /*
+         * Particles
+         */
+
+        particles.rotation.y =
+            time * 0.012;
+
+
+        particles.rotation.x =
+            Math.sin(
+                time * 0.12
+            ) * 0.05;
+
+
+        /*
+         * Customer points pulse slightly
+         */
+
+        customerPoints.forEach(
+            function (point, index) {
+
+
+                if (
+                    point !== hoveredPoint
+                ) {
+
+                    const pulse =
+                        1 +
+                        Math.sin(
+                            time * 1.5 +
+                            index * 0.15
+                        ) * 0.06;
+
+
+                    point.scale.set(
+                        pulse,
+                        pulse,
+                        pulse
+                    );
+
+                }
+
+            }
+        );
+
+
+        controls.update();
+
+
+        renderer.render(
+            scene,
+            camera
+        );
+
+    }
+
+
+    animate();
+
+
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+
+    function resize3D() {
+
+
+        const width =
+            container.clientWidth;
+
+
+        const height =
+            container.clientHeight;
+
+
+        if (
+            width === 0 ||
+            height === 0
+        ) {
+            return;
+        }
+
+
+        camera.aspect =
+            width / height;
+
+
+        camera.updateProjectionMatrix();
+
+
+        renderer.setSize(
+            width,
+            height
+        );
+
+    }
+
+
+    window.addEventListener(
+        "resize",
+        resize3D
+    );
+
+
+    resize3D();
+
+
+})();
+
+</script>
+
+
+
+<!-- ============================================================
+     EXISTING DASHBOARD JAVASCRIPT
+============================================================ -->
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+{% include "_help_widget.html" %}
+<script src="{{ url_for('static', filename='js/help-widget.js') }}"></script>
+<script src="{{ url_for('static', filename='js/enhancements.js') }}"></script>
+
+</body>
+
+</html>

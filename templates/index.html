@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/help-widget.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enhancements.css') }}">
+</head>
+
+<body>
+    <a href="/" class="home-button">
+        ← Home
+    </a>
+
+    <div class="container">
+
+        <h1>Customer Churn Prediction</h1>
+        <p class="subtitle">
+            Enter customer details to predict whether the customer is likely to churn.
+        </p>
+
+        <form action="/predict" method="POST">
+
+            <!-- Customer Information -->
+            <h2>Customer Information</h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender" required>
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Senior Citizen</label>
+                    <select name="senior_citizen" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Partner</label>
+                    <select name="partner" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Dependents</label>
+                    <select name="dependents" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tenure (Months)</label>
+                    <input type="number" name="tenure_months" min="0" required>
+                </div>
+
+            </div>
+
+            <!-- Services -->
+            <h2>Services</h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Phone Service</label>
+                    <select name="phone_service" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Multiple Lines</label>
+                    <select name="multiple_lines" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="No phone service">No phone service</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Internet Service</label>
+                    <select name="internet_service" required>
+                        <option value="">Select</option>
+                        <option value="DSL">DSL</option>
+                        <option value="Fiber optic">Fiber optic</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Online Security</label>
+                    <select name="online_security" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="No internet service">No internet service</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Online Backup</label>
+                    <select name="online_backup" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="No internet service">No internet service</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Device Protection</label>
+                    <select name="device_protection" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="No internet service">No internet service</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tech Support</label>
+                    <select name="tech_support" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="No internet service">No internet service</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Streaming TV</label>
+                    <select name="streaming_tv" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="No internet service">No internet service</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Streaming Movies</label>
+                    <select name="streaming_movies" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="No internet service">No internet service</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Billing Information -->
+            <h2>Billing Information</h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Contract</label>
+                    <select name="contract" required>
+                        <option value="">Select</option>
+                        <option value="Month-to-month">Month-to-month</option>
+                        <option value="One year">One year</option>
+                        <option value="Two year">Two year</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Paperless Billing</label>
+                    <select name="paperless_billing" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select name="payment_method" required>
+                        <option value="">Select</option>
+                        <option value="Electronic check">Electronic check</option>
+                        <option value="Mailed check">Mailed check</option>
+                        <option value="Bank transfer">Bank transfer</option>
+                        <option value="Credit card">Credit card</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Monthly Charges</label>
+                    <input type="number" name="monthly_charges" step="0.01" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Total Charges</label>
+                    <input type="number" name="total_charges" step="0.01" min="0" required>
+                </div>
+
+            </div>
+
+            <button type="submit">Predict Customer Churn</button>
+
+        </form>
+
+        {% if prediction_result %}
+        <div
+            class="result {% if probability >= 70 %}churn-result{% elif probability >= 40 %}medium-result{% else %}stay-result{% endif %}">
+
+            <div class="result-header">
+                <span class="result-label">PREDICTION RESULT</span>
+
+                {% if probability >= 70 %}
+                <span class="risk-badge high-risk">HIGH RISK</span>
+
+                {% elif probability >= 40 %}
+                <span class="risk-badge medium-risk">MODERATE RISK</span>
+
+                {% else %}
+                <span class="risk-badge low-risk">LOW RISK</span>
+                {% endif %}
+            </div>
+
+
+            <div class="result-main">
+
+                <div class="result-icon">
+                    {% if probability >= 70 %}
+                    ⚠️
+                    {% elif probability >= 40 %}
+                    ⚡
+                    {% else %}
+                    ✓
+                    {% endif %}
+                </div>
+
+
+                <h3>{{ prediction_result }}</h3>
+
+
+                <div class="gauge-wrap">
+                    <svg class="gauge-svg" viewBox="0 0 190 190">
+                        <circle class="gauge-track" cx="95" cy="95" r="80"></circle>
+                        <circle
+                            class="gauge-fill {% if probability >= 70 %}high{% elif probability >= 40 %}medium{% else %}low{% endif %}"
+                            cx="95" cy="95" r="80"
+                            data-pct="{{ probability }}">
+                        </circle>
+                    </svg>
+                </div>
+
+                <div class="gauge-center-label">
+                    <span class="gauge-number {% if probability >= 70 %}high{% elif probability >= 40 %}medium{% else %}low{% endif %}">
+                        {{ probability }}%
+                    </span>
+                    <span class="gauge-caption">Churn Probability</span>
+                </div>
+
+            </div>
+
+
+            <!-- Risk Meter -->
+            <div class="risk-meter">
+
+                <div class="risk-meter-track">
+                    <div class="risk-meter-fill" style="width: {{ probability }}%;">
+                    </div>
+                </div>
+
+                <div class="meter-labels">
+                    <span>Low Risk</span>
+                    <span>Moderate Risk</span>
+                    <span>High Risk</span>
+                </div>
+
+            </div>
+
+
+            <!-- Risk Message -->
+            <div class="risk-message">
+
+                {% if probability >= 70 %}
+
+                <strong>⚠️ Immediate Attention Recommended</strong>
+
+                <p>
+                    This customer has a high probability of leaving.
+                    Consider offering personalized retention benefits,
+                    discounts, or service support.
+                </p>
+
+                {% elif probability >= 40 %}
+
+                <strong>⚡ Customer Needs Attention</strong>
+
+                <p>
+                    This customer shows moderate churn risk.
+                    Consider monitoring their activity and improving
+                    their service experience.
+                </p>
+
+                {% else %}
+
+                <strong>✓ Customer Appears Stable</strong>
+
+                <p>
+                    This customer currently has a low probability of
+                    churning. Continue providing a good service experience.
+                </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+        {% endif %}
+    </div>
+
+    {% include "_help_widget.html" %}
+    <script src="{{ url_for('static', filename='js/help-widget.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/enhancements.js') }}"></script>
+
+</body>
+
+</html>

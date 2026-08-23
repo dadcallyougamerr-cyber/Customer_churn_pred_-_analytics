@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Churn Intelligence</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/help-widget.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enhancements.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+</head>
+
+<body>
+    <div class="live-background">
+
+    <!-- Moving customer churn graph -->
+    <svg class="churn-graph" viewBox="0 0 1600 900" preserveAspectRatio="none">
+
+        <!-- Graph grid -->
+        <g class="graph-grid">
+            <line x1="0" y1="150" x2="1600" y2="150"></line>
+            <line x1="0" y1="300" x2="1600" y2="300"></line>
+            <line x1="0" y1="450" x2="1600" y2="450"></line>
+            <line x1="0" y1="600" x2="1600" y2="600"></line>
+            <line x1="0" y1="750" x2="1600" y2="750"></line>
+
+            <line x1="200" y1="0" x2="200" y2="900"></line>
+            <line x1="400" y1="0" x2="400" y2="900"></line>
+            <line x1="600" y1="0" x2="600" y2="900"></line>
+            <line x1="800" y1="0" x2="800" y2="900"></line>
+            <line x1="1000" y1="0" x2="1000" y2="900"></line>
+            <line x1="1200" y1="0" x2="1200" y2="900"></line>
+            <line x1="1400" y1="0" x2="1400" y2="900"></line>
+        </g>
+
+        <!-- Main churn graph -->
+        <g class="graph-motion">
+
+            <path
+                class="churn-line"
+                d="
+                M 0 570
+                L 100 520
+                L 200 540
+                L 300 430
+                L 400 470
+                L 500 350
+                L 600 390
+                L 700 260
+                L 800 320
+                L 900 210
+                L 1000 280
+                L 1100 180
+                L 1200 250
+                L 1300 140
+                L 1400 220
+                L 1500 110
+                L 1600 170
+                "
+            ></path>
+
+            <!-- Second analytics line -->
+            <path
+                class="secondary-line"
+                d="
+                M 0 680
+                L 120 620
+                L 240 650
+                L 360 560
+                L 480 590
+                L 600 500
+                L 720 530
+                L 840 420
+                L 960 460
+                L 1080 350
+                L 1200 410
+                L 1320 300
+                L 1440 350
+                L 1600 250
+                "
+            ></path>
+
+        </g>
+
+        <!-- Glowing data points -->
+        <g class="graph-points">
+            <circle cx="300" cy="430" r="7"></circle>
+            <circle cx="500" cy="350" r="7"></circle>
+            <circle cx="700" cy="260" r="7"></circle>
+            <circle cx="900" cy="210" r="7"></circle>
+            <circle cx="1100" cy="180" r="7"></circle>
+            <circle cx="1300" cy="140" r="7"></circle>
+            <circle cx="1500" cy="110" r="7"></circle>
+        </g>
+
+    </svg>
+
+    <!-- Floating analytics particles -->
+    <div class="particle particle-1"></div>
+    <div class="particle particle-2"></div>
+    <div class="particle particle-3"></div>
+    <div class="particle particle-4"></div>
+
+</div>
+    <div class="page-content">
+    <div class="home-container">
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <span class="eyebrow">
+                    CUSTOMER INTELLIGENCE SYSTEM
+                </span>
+
+                <h1>
+                    Customer Churn
+                    <span>Prediction & Analytics</span>
+                </h1>
+
+                <p>
+                    Identify customers at risk of churn and explore
+                    customer behavior through interactive analytics.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- OPTIONS -->
+
+        <section class="options-section">
+
+            <h2>Choose an Analysis Mode</h2>
+
+            <p class="section-subtitle">
+                Select what you want to do
+            </p>
+
+
+            <div class="options-grid">
+
+
+                <!-- PREDICTION -->
+
+                <a href="/predict-page" class="option-card prediction-card">
+
+                    <div class="option-icon">
+                        🔮
+                    </div>
+
+                    <div class="option-content">
+
+                        <h3>
+                            Customer Churn Prediction
+                        </h3>
+
+                        <p>
+                            Enter individual customer information
+                            and predict their probability of churn.
+                        </p>
+
+                        <span class="option-link">
+                            Start Prediction →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <!-- ANALYTICS -->
+
+                <a href="/dashboard" class="option-card analytics-card">
+
+                    <div class="option-icon">
+                        📊
+                    </div>
+
+                    <div class="option-content">
+
+                        <h3>
+                            Analytics Dashboard
+                        </h3>
+
+                        <p>
+                            Explore churn trends, customer segments,
+                            contracts, services and tenure.
+                        </p>
+
+                        <span class="option-link">
+                            Open Analytics →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- FEATURES -->
+
+        <section class="features">
+
+            <div class="feature">
+
+                <strong>
+                    Machine Learning
+                </strong>
+
+                <span>
+                    Random Forest churn prediction
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <strong>
+                    Interactive Analytics
+                </strong>
+
+                <span>
+                    Filter-based customer analysis
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <strong>
+                    Business Insights
+                </strong>
+
+                <span>
+                    Data-driven retention analysis
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+
+            <p>
+                Customer Churn Prediction & Analytics System
+            </p>
+
+        </footer>
+
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/background3d.js') }}"></script>
+
+{% include "_help_widget.html" %}
+<script src="{{ url_for('static', filename='js/help-widget.js') }}"></script>
+<script src="{{ url_for('static', filename='js/enhancements.js') }}"></script>
+
+</body>
+
+</html>
